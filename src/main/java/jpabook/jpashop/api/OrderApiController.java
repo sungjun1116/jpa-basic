@@ -1,6 +1,6 @@
 package jpabook.jpashop.api;
 
-import jpabook.jpashop.domain.Address;
+ import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderItem;
 import jpabook.jpashop.domain.OrderStatus;
