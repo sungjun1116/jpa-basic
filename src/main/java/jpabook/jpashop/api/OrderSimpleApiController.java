@@ -7,7 +7,6 @@ import jpabook.jpashop.repository.order.OrderRepository;
 import jpabook.jpashop.repository.order.OrderSearch;
 import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
 import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryRepository;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +35,7 @@ public class OrderSimpleApiController {
     }
 
     @GetMapping("api/v2/simple-orders")
-    public Result ordersV2() {
+    public Result<List<SimpleOrderDto>> ordersV2() {
 
         //ORDER 2개, N
         //N+1 Problem = 1 + 회원(N=2) + 배송(N=2) = 5
@@ -44,31 +43,24 @@ public class OrderSimpleApiController {
                 .map(SimpleOrderDto::new)
                 .collect(Collectors.toList());
 
-        return new Result(collect.size(), collect);
+        return new Result<>(collect.size(), collect);
     }
 
     @GetMapping("api/v3/simple-orders")
-    public Result ordersV3() {
+    public Result<List<SimpleOrderDto>> ordersV3() {
 
-        List<SimpleOrderDto> collect = orderRepository.findAllMemberDelivery().stream()
+        List<SimpleOrderDto> collect = orderRepository.findAllWithMemberDelivery().stream()
                 .map(SimpleOrderDto::new)
                 .collect(Collectors.toList());
 
-        return new Result(collect.size(), collect);
+        return new Result<>(collect.size(), collect);
     }
 
     @GetMapping("api/v4/simple-orders")
-    public Result ordersV4() {
+    public Result<List<OrderSimpleQueryDto>> ordersV4() {
 
         List<OrderSimpleQueryDto> collect = orderSimpleQueryRepository.findOrderDtos();
-        return new Result(collect.size(), collect);
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class Result<T> {
-        private int count;
-        private T data;
+        return new Result<>(collect.size(), collect);
     }
 
     @Data

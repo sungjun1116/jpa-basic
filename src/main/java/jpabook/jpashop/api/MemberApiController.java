@@ -28,19 +28,12 @@ public class MemberApiController {
     }
 
     @GetMapping("api/v2/members")
-    public Result memberV2() {
+    public Result<List<MemberDto>> memberV2() {
         List<MemberDto> collect = memberService.findMembers().stream()
                 .map(m -> new MemberDto(m.getName()))
                 .collect(Collectors.toList());
 
-        return new Result(collect.size(), collect);
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class Result<T> {
-        private int count;
-        private T data;
+        return new Result<>(collect.size(), collect);
     }
 
     @Data
